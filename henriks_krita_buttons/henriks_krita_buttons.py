@@ -3,10 +3,12 @@ from krita import DockWidget, DockWidgetFactory, DockWidgetFactoryBase
 from PyQt5.QtWidgets import *
 import sys
 
+
 DOCKER_NAME = 'Henriks buttons'
 DOCKER_ID = 'henriks_buttons'
 
 class HenriksOnscreenKritaShortcutButtons(DockWidget):
+
 
     def undo(self):
         Krita.instance().action('edit_undo').trigger()
@@ -28,6 +30,9 @@ class HenriksOnscreenKritaShortcutButtons(DockWidget):
 
     def mirror_canvas(self):
         Krita.instance().action('mirror_canvas').trigger()
+
+    def only_canvas(self):
+        Krita.instance().action('view_show_canvas_only').trigger()
 
     def reset_canvas_rotation(self):
         Krita.instance().action('reset_canvas_rotation').trigger()
@@ -76,9 +81,13 @@ class HenriksOnscreenKritaShortcutButtons(DockWidget):
         resetCanvasContainer.layout().addWidget(resetCanvasRotationButton)
 
 
-
-        mirrorCanvasButton = self.create_button("Mirror Canvas", mainWidget, self.mirror_canvas)
-        mainWidget.layout().addWidget(mirrorCanvasButton)
+        canvasContainer = QWidget(self)
+        canvasContainer.setLayout(QHBoxLayout())
+        mainWidget.layout().addWidget(canvasContainer)
+        mirrorCanvasButton = self.create_button("Mirror", canvasContainer, self.mirror_canvas)
+        canvasContainer.layout().addWidget(mirrorCanvasButton)
+        onlyCanvasButton = self.create_button("Only", canvasContainer, self.only_canvas)
+        canvasContainer.layout().addWidget(onlyCanvasButton)
 
 
 
